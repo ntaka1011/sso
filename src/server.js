@@ -6,8 +6,7 @@ import initApiRoutes from "./routes/api";
 import configCors from "./config/cors";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
-// import connection from "./config/connectDB";
-
+import { configPassPort } from "./controller/passportController";
 const app = express();
 const PORT = process.env.PORT || 8080;
 
@@ -35,6 +34,8 @@ initApiRoutes(app);
 app.use((req, res) => {
   return res.send("404 not found");
 });
+
+configPassPort();
 
 app.listen(PORT, () => {
   console.log(">>> JWT Backend is running on the port = " + PORT);
