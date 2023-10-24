@@ -3,6 +3,8 @@ import homeController from "../controller/homeController";
 import apiController from "../controller/apiController";
 import loginController from "../controller/loginController";
 import passport from "passport";
+import checkUser from "../middleware/checkUser";
+import passportController from "../controller/passportController";
 
 const router = express.Router();
 
@@ -13,7 +15,7 @@ const router = express.Router();
 
 const initWebRoutes = (app) => {
   //path, handler
-  router.get("/", homeController.handleHelloWord);
+  router.get("/", checkUser.isLogin, homeController.handleHelloWord);
   router.get("/user", homeController.handleUserPage);
   router.post("/users/create-user", homeController.handleCreateNewUser);
   router.post("/delete-user/:id", homeController.handleDelteUser);
@@ -24,7 +26,9 @@ const initWebRoutes = (app) => {
   //GET - R, POST- C, PUT - U, DELETE - D
   router.get("/api/test-api", apiController.testApi);
 
-  router.get("/login", loginController.getLoginPage);
+  router.get("/login", checkUser.isLogin, loginController.getLoginPage);
+
+  router.post("/logout");
 
   app.post(
     "/login",

@@ -11,7 +11,6 @@ const configPassPort = () => {
       };
 
       let res = await loginRegisterService.handleUserLogin(rowsData);
-      console.log("🚀 ~ file: passportController.js:14 ~ res:", res);
 
       if (res && +res.EC === 0) {
         return done(null, res.DT);
