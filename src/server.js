@@ -7,16 +7,20 @@ import configCors from "./config/cors";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import { configPassPort } from "./controller/passportController";
-// import connection from "./config/connectDB";
+import connection from "./config/connectDB";
 import configSession from "./config/session";
+import flash from "connect-flash";
 
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+// config flash messages
+app.use(flash());
+
 //config cors
 configCors(app);
 
-// connection();
+connection();
 
 //config view engine
 configViewEngine(app);

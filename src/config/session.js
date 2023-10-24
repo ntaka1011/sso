@@ -35,8 +35,8 @@ const configSession = (app) => {
       resave: false, // we support the touch method so per the express-session docs this should be set to false
       proxy: true, // if you do SSL outside of node.
       saveUninitialized: false,
-      expiration: 30 * 1000,
-      cookie: { expires: 30 * 1000 },
+      expiration: 300 * 1000,
+      cookie: { expires: 300 * 1000 },
     })
   );
 
@@ -46,6 +46,7 @@ const configSession = (app) => {
 
   // Ma hoá : mã hoá thông tin
   passport.serializeUser(function (user, cb) {
+    console.log("🚀 ~ file: session.js:49 ~ user:", user);
     process.nextTick(function () {
       // cb(null, { id: user.id, username: user.username });
       cb(null, user);
@@ -54,6 +55,7 @@ const configSession = (app) => {
 
   // Giải mã: giải mã thông tin
   passport.deserializeUser(function (user, cb) {
+    console.log("🚀 ~ file: session.js:58 ~ user:", user);
     process.nextTick(function () {
       return cb(null, user);
     });

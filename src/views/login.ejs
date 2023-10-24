@@ -17,6 +17,7 @@
 
     <!-- Latest compiled JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   </head>
 
   <style>
@@ -32,7 +33,39 @@
       cursor: pointer;
       padding: 0 15px;
     }
+    .flash{
+      display: none;
+    }
   </style>
+
+  <script>
+   $(document).ready(function () {
+    $('#btnLogin').on('click', function(){
+      const username = $('#username').val();
+      const password = $('#password').val();
+      $('#flashMsg').empty('');
+      $.ajax({
+        type: 'POST',
+        url: `${window.location.origin}/login`,
+        data: { username, password },
+        cache: false,
+        xhrFields: {
+          withCredentials: true
+        },
+        success: function(data){  
+          console.log(">>>>>: ",data)
+          $('#flashMsg').addClass('flash')
+          window.location.href = '/';
+        },
+        error: function(request, status, error){
+          $('#password').val("");
+          $('#flashMsg').removeClass('flash')
+          $('#flashMsg').append(request.responseText)
+        }
+      })
+    })
+   })
+  </script>
 
   <body>
     <!-- Pills content -->
@@ -43,30 +76,48 @@
         role="tabpanel"
         aria-labelledby="tab-login"
       >
-        <form class="col-6 mx-auto" method="post" action="/login">
+      <form>
+        <div class="col-6 mx-auto mt-4">
           <fieldset class="border rounded-3 p-3">
             <legend class="float-none w-auto px-3">Login Form:</legend>
+  
+              <div class="alert alert-danger my-3 flash" role="alert" id="flashMsg">
+
+              </div>
+            
             <!-- Email input -->
             <div class="form-outline mb-4">
-              <input 
-              type="email" 
-              class="form-control"
-              name="username"
-              />
+
               <label class="form-label" for="loginName"
-                >Email or username</label
+                >Username</label
               >
+              <div class="input-group has-validation">
+                <input 
+                type="text"         
+                class="form-control"
+                name="username"
+                id="username"
+                />
+                <div class="invalid-feedback">
+                  Please choose a username.
+                </div>
+              </div>
             </div>
 
             <!-- Password input -->
             <div class="form-outline mb-4">
-              <input type="password" name="password" class="form-control" />
               <label class="form-label" for="loginPassword">Password</label>
+              <div class="input-group has-validation">
+                <input type="password" name="password" id="password" class="form-control" autocomplete="on"/>
+                <div class="invalid-feedback">
+                  Please choose a username.
+                </div>
+              </div>
             </div>
 
             <!-- Submit button -->
-            <button type="submit" class="btn btn-primary btn-block mb-4">
-              Sign in
+            <button type="button" id="btnLogin" class="btn btn-primary btn-block mb-4">
+              Sign in 
             </button>
             <hr />
             <div>
@@ -79,8 +130,9 @@
               </div>
             </div>
           </fieldset>
-        </form>
+        </div>
+      </form>
+          
       </div>
-      
   </body>
 </html>
